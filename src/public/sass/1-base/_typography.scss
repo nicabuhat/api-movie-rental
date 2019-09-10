@@ -1,0 +1,60 @@
+/*imported font*/
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap");
+@font-face {
+  font-family: Cooper Hewitt;
+  src: url("/fonts/CooperHewitt.woff");
+  font-weight: normal;
+}
+
+body {
+  font-family: "Coooper Hewitt", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 1.7rem;
+  color: $color-dark;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-size: 4.8rem;
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+h3 {
+  font-size: 1.8rem;
+}
+
+.jumbotron {
+  font-size: 7.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: $color-muted;
+  font-weight: 200;
+}
+
+.text-light {
+  font-weight: 300;
+}
+
+.text-icon {
+  padding-top: 0.5rem;
+  padding-right: 2rem;
+  font-size: 3rem;
+  font-weight: lighter;
+}
+
+.text-link {
+  font-weight: 700;
+  color: $color-accent;
+}
