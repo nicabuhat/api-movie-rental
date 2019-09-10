@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const genres = require("./routes/genres");
+const customers = require("./routes/customers");
 const express = require("express");
 const app = express();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
   res.render("index", { title: "Movie Rental App", message: "Hello World" });
 });
 app.use("/api/genres", genres);
+app.use("/api/customers", customers);
 
 // PORT
 const port = process.env.PORT || 3000;
