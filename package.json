@@ -1,0 +1,13 @@
+{
+  "name": "project_movie_rental",
+  "version": "1.0.0",
+  "description": "Music application",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2"
+  }
+}
