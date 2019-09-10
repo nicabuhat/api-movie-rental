@@ -1,64 +1,74 @@
-const Joi = require("joi");
+const { Customer, validate } = require("../models/customer");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
-//create MongoDB schema and model
-const Customer = mongoose.model(
-  "Customer",
-  new mongoose.Schema({
-    isGold: {
-      type: Boolean,
-      default: false
-    },
-    name: {
-      type: String,
-      required: true,
-      minlength: 5,
-      maxlength: 50
-    },
-    phone: {
-      type: String,
-      required: true,
-      minlength: 5,
-      maxlength: 50
-    }
-  })
-);
-
+//GET ALL CUSTOMERS
 router.get("/", async (req, res) => {
+  //get all customers and sort by name
   const customers = await Customer.find().sort("name");
   res.send(customers);
 });
 
+//POST
 router.post("/", async (req, res) => {
-  const { error } = validateCustomer(req.body);
+  //validate with Joi
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
+  //create new customer object
   let customer = new Customer({
     name: req.body.name,
     phone: req.body.phone,
     isGold: req.body.isGold
   });
+  //save change to database
   customer = await customer.save();
 
   res.send(customer);
 });
 
-function validateCustomer(customer) {
-  const schema = {
-    name: Joi.string()
-      .min(5)
-      .max(50)
-      .required(),
-    phone: Joi.string()
-      .min(5)
-      .max(50)
-      .required(),
-    isGold: Joi.boolean()
-  };
+//PUT
+router.put("/:id", async (req, res) => {
+  //validate with Joi
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  return Joi.validate(customer, schema);
-}
+  //find customer by ID and update database
+  const customer = await Customer.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    phone: req.body.phone,
+    isGold: req.body.isGold
+  });
+
+  //send error if ID does not exist
+  if (!customer)
+    return res.status(404).send("The customer with the given ID was not found");
+
+  res.send(customer);
+});
+
+//DELETE
+router.delete("/:id", async (req, res) => {
+  //find customer by ID and remove item
+  const customer = await Cutomer.findByIdAndRemove(req.params.id);
+
+  //send error if ID does not exist
+  if (!customer)
+    return res.status(404).send("The customer with the given ID was not found");
+
+  res.send(customer);
+});
+
+//GET SINGLE CUSTOMER
+router.get("/:id", async (req, res) => {
+  //find customer by ID and get the customer details
+  const customer = await Customer.findById(req.params.id);
+
+  //send error if ID does not exist
+  if (!customer)
+    return res.status(404).send("The customer with the given ID was not found");
+
+  res.send(customer);
+});
 
 module.exports = router;
