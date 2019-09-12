@@ -63,3 +63,5 @@ router.post("/", async (req, res) => {
 
   res.send(rental);
 });
+
+module.exports = router;

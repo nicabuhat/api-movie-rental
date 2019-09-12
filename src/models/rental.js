@@ -62,8 +62,9 @@ const Rental = mongoose.model(
 //exclude rental details that only the system handles
 function validateRental(rental) {
   const schema = {
-    customerId: Joi.string().required(),
-    movieId: Joi.string().required()
+    //check if id is valid mongoose id
+    customerId: Joi.objectId().required(),
+    movieId: Joi.objectId().required()
   };
 
   return Joi.validate(movie, schema);
