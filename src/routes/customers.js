@@ -16,13 +16,13 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   //create new customer object
-  let customer = new Customer({
+  const customer = new Customer({
     name: req.body.name,
     phone: req.body.phone,
     isGold: req.body.isGold
   });
   //save change to database
-  customer = await customer.save();
+  await customer.save();
 
   res.send(customer);
 });
@@ -50,7 +50,7 @@ router.put("/:id", async (req, res) => {
 //DELETE
 router.delete("/:id", async (req, res) => {
   //find customer by ID and remove item
-  const customer = await Cutomer.findByIdAndRemove(req.params.id);
+  const customer = await Customer.findByIdAndRemove(req.params.id);
 
   //send error if ID does not exist
   if (!customer)
