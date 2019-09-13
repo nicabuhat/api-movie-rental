@@ -34,7 +34,7 @@ const Movie = mongoose.model(
 //validate request details
 function validateMovie(movie) {
   const schema = {
-    name: Joi.string()
+    title: Joi.string()
       .min(5)
       .max(50)
       .required(),

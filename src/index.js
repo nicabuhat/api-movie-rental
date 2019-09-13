@@ -5,8 +5,11 @@ const genres = require("./routes/genres");
 const customers = require("./routes/customers");
 const movies = require("./routes/movies");
 const rentals = require("./routes/rentals");
+const users = require("./routes/users");
+const auth = require("./routes/auth");
 const express = require("express");
 const app = express();
+var path = require("path");
 
 //connect to database
 mongoose
@@ -16,14 +19,15 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("Could not connect to MongoDB"));
+mongoose.set("useCreateIndex", true);
 
-//set templating engine & directory
+// require static assets from public folder
+app.use(express.static(path.join(__dirname, "public")));
+// set templating engine & directory
 app.set("view engine", "pug");
-app.set("views", "./views");
-//parse req body
+app.set("views", path.join(__dirname, "views"));
+// parse req body
 app.use(express.urlencoded({ extended: true }));
-//serve static files & set directory
-app.use(express.static("public"));
 
 app.use(express.json());
 
@@ -36,6 +40,7 @@ app.use("/api/customers", customers);
 app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 // PORT
 const port = process.env.PORT || 3000;

@@ -1,4 +1,5 @@
 const { Movie, validate } = require("../models/movie");
+const { Genre } = require("../models/genre");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -22,7 +23,7 @@ router.post("/", async (req, res) => {
 
   //create new movie  object
   const movie = new Movie({
-    title: req.body.name,
+    title: req.body.title,
     genre: {
       _id: genre._id,
       name: genre.name
