@@ -1,4 +1,6 @@
 const { User, validate } = require("../models/user");
+const _ = require("lodash");
+const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -15,60 +17,22 @@ router.post("/", async (req, res) => {
   //validate with Joi
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+
+  //check if user is already registered
+  const user = await User.findOne({ email: req.body.email });
+  if (user) return res.status(400).send("User already registered");
+
   //create new user object
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
+  const user = new User(_.pick(req.body, ["name", "email", "password"]));
+
+  //encrypt password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+
   //save change to database
   await user.save();
 
-  res.send(user);
-});
-
-//PUT
-router.put("/:id", async (req, res) => {
-  //validate with Joi
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  //find user by ID and update database
-  const user = await User.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
-
-  //send error if ID does not exist
-  if (!user)
-    return res.status(404).send("The user with the given ID was not found");
-
-  res.send(user);
-});
-
-//DELETE
-router.delete("/:id", async (req, res) => {
-  //find user by ID and remove item
-  const user = await User.findByIdAndRemove(req.params.id);
-
-  //send error if ID does not exist
-  if (!user)
-    return res.status(404).send("The user with the given ID was not found");
-
-  res.send(user);
-});
-
-//GET SINGLE USER
-router.get("/:id", async (req, res) => {
-  //find user by ID and get the user details
-  const user = await User.findById(req.params.id);
-
-  //send error if ID does not exist
-  if (!user)
-    return res.status(404).send("The user with the given ID was not found");
-
-  res.send(user);
+  res.send(_.pick(user, ["_id", "name", "email"]));
 });
 
 module.exports = router;
