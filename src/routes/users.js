@@ -25,7 +25,13 @@ router.post("/", async (req, res) => {
   //save change to database
   await user.save();
 
-  res.send(_.pick(user, ["_id", "name", "email"]));
+  //generate auth token
+  const token = user.generateAuthToken();
+
+  //include token in the response header
+  res
+    .header("x-auth-token", token)
+    .send(_.pick(user, ["_id", "name", "email"]));
 });
 
 module.exports = router;
