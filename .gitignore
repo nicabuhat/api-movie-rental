@@ -3,3 +3,4 @@ package-lock.json
 build
 src/public
 gulpfile.js
+src/config
