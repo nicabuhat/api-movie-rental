@@ -24,6 +24,19 @@ function sass() {
     .pipe(dest(paths.css));
 }
 
+//minify js
+// // Gulp task to minify JavaScript files
+// gulp.task("scripts", function() {
+//   return (
+//     gulp
+//       .src("./src/**/*.js")
+//       // Minify the file
+//       .pipe(uglify())
+//       // Output
+//       .pipe(gulp.dest("./assets/scripts"))
+//   );
+// });
+
 exports.default = function() {
   watch("src/sass/**/*.scss", sass);
 };
