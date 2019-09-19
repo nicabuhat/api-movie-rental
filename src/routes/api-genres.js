@@ -1,5 +1,5 @@
-const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
+const auth = require("../controllers/auth");
+const admin = require("../controllers/admin");
 const { Genre, validate } = require("../models/genre");
 const mongoose = require("mongoose");
 const express = require("express");

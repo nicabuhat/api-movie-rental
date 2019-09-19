@@ -1,95 +1,29 @@
-const { Movie, validate } = require("../models/movie");
-const { Genre } = require("../models/genre");
-const mongoose = require("mongoose");
 const express = require("express");
+const request = require("request");
 const router = express.Router();
+const moviesController = require("../controllers/moviesController");
 
-//GET ALL MOVIES
-router.get("/", async (req, res) => {
-  //get all genres and sort by name
-  const movies = await Movie.find().sort("title");
-  res.send(movies);
-});
+//
+// router.get("/", (req, res) => {
+//   //   let query = "";
+//   //   const key = "10fa404088d797470afce6fe4b1fa635";
+//   //   const search = `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}`;
+//   //   request(search, (error, response, body) => {
+//   //     res.send(body);
+//   //   });
 
-//POST
-router.post("/", async (req, res) => {
-  //validate with Joi
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+//   //discover https://developers.themoviedb.org/3/discover/movie-discover
+//   request(
+//     "https://api.themoviedb.org/3/discover/movie?api_key=10fa404088d797470afce6fe4b1fa635&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1",
+//     (error, response, body) => {
+//       const popularMovies = JSON.parse(body);
+//       res.render("admin", { movies: popularMovies.results });
+//     }
+//   );
+// });
 
-  //check if genre is valid
-  const genre = await Genre.findById(req.body.genreId);
-  if (!genre) return res.status(400).send("Invalid genre.");
-
-  //create new movie  object
-  const movie = new Movie({
-    title: req.body.title,
-    genre: {
-      _id: genre._id,
-      name: genre.name
-    },
-    numberInStock: req.body.numberInStock,
-    dailyRentalRate: req.body.dailyRentalRate
-  });
-  //save change to database
-  await movie.save();
-  res.send(movie);
-});
-
-//PUT
-router.put("/:id", async (req, res) => {
-  //validate before querying database
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  //check if genre is valid
-  const genre = await Genre.findById(req.body.genreId);
-  if (!genre) return res.status(400).send("Invalid genre.");
-
-  //find movie by ID and update database
-  const movie = await Movie.findByIdAndUpdate(
-    req.params.id,
-    {
-      title: req.body.title,
-      genre: {
-        _id: genre._id,
-        name: genre.name
-      },
-      numberInStock: req.body.numberInStock,
-      dailyRentalRate: req.body.dailyRentalRate
-    },
-    { new: true }
-  );
-
-  //send error if ID does not exist
-  if (!movie)
-    return res.status(404).send("The movie with the given ID was not found.");
-
-  res.send(movie);
-});
-
-//DELETE
-router.delete("/:id", async (req, res) => {
-  //find movie by ID and remove the item
-  const movie = await Movie.findByIdAndRemove(req.params.id);
-
-  //send error if ID does not exist
-  if (!movie)
-    return res.status(404).send("The movie with the given ID was not found.");
-
-  res.send(movie);
-});
-
-//GET SINGLE MOVIE
-router.get("/:id", async (req, res) => {
-  //find movie by ID and get the item details
-  const movie = await Movie.findById(req.params.id);
-
-  //send error if ID does not exist
-  if (!movie)
-    return res.status(404).send("The movie with the given ID was not found.");
-
-  res.send(movie);
+router.get("/new", (req, res) => {
+  res.render("movies/movie_new");
 });
 
 module.exports = router;
