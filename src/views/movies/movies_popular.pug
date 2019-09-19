@@ -1,0 +1,27 @@
+h1 Popular Movies
+    each movie in movies
+        .movie
+            h3.movie__title= movie.title
+            div.movie__poster
+                img(src=`http://image.tmdb.org/t/p/w500/${movie.poster_path}`, alt="")
+                //- "w92", "w154", "w185", "w342", "w500", "w780", or "original"
+            p.movie__description= movie.overview
+            h4.movie__rating= movie.vote_average
+
+    //-     "popularity": 362.853,
+    //-   "vote_count": 716,
+    //-   "video": false,
+    //-   "poster_path": "/zfE0R94v1E8cuKAerbskfD3VfUt.jpg",
+    //-   "id": 474350,
+    //-   "adult": false,
+    //-   "backdrop_path": "/4W0FnjSGn4x0mKZlBRx8OjFxQUM.jpg",
+    //-   "original_language": "en",
+    //-   "original_title": "It Chapter Two",
+    //-   "genre_ids": [
+    //-     35,
+    //-     27
+    //-   ],
+    //-   "title": "It Chapter Two",
+    //-   "vote_average": 7.2,
+    //-   "overview": "27 years after overcoming the malevolent supernatural entity Pennywise, the former members of the Losers' Club, who have grown up and moved away from Derry, are brought back together by a devastating phone call.",
+    //-   "release_date": "2019-09-06"

@@ -7,20 +7,24 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
     "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "browser-sync": "^2.26.7",
     "config": "^3.2.2",
     "express": "^4.17.1",
     "fawn": "^2.1.5",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.4.2",
     "joi": "^14.3.1",
     "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.7.0",
-    "pug": "^2.0.4"
+    "node-sass": "^4.12.0",
+    "pug": "^2.0.4",
+    "request": "^2.88.0"
   }
 }
